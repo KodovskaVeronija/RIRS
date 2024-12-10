@@ -23,11 +23,11 @@ jobs:
 
       - name: Install Dependencies
         working-directory: ./front
-        run: npm install
+        run: npm ci # Use `npm ci` for clean installs in CI environments
 
       - name: Run Tests
         working-directory: ./front
-        run: npm test -- --coverage # Add the run key for running tests
+        run: npm test -- --coverage
 
       - name: Upload Coverage Report
         if: success()
@@ -50,7 +50,11 @@ jobs:
 
       - name: Install Dependencies
         working-directory: ./backend
-        run: npm install
+        run: npm ci # Use `npm ci` for clean installs in CI environments
+
+      - name: Debug Installed Dependencies
+        working-directory: ./backend
+        run: npm ls
 
       - name: Run Tests
         working-directory: ./backend
