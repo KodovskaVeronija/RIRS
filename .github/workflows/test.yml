@@ -49,19 +49,12 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
+        working-directory: ./backend
         run: npm install
 
       - name: Run Tests
         working-directory: ./backend
         run: npm test -- --coverage
-      - name: Check Node Version
-        run: node -v
-
-      - name: Check NPM Version
-        run: npm -v
-
-      - name: List Installed Dependencies
-        run: npm ls
 
       - name: Upload Coverage Report
         if: success()
