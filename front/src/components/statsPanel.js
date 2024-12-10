@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 
-const StatsPanel = ({ employees, managers, groups }) => {
+const StatsPanel = ({ employees = 0, managers = 0, groups = 0 }) => {
   return (
     <Box sx={{ mb: 4 }}>
       <Typography variant='h6' gutterBottom>
@@ -17,10 +17,7 @@ const StatsPanel = ({ employees, managers, groups }) => {
             <CardContent>
               <Typography variant='subtitle1'>Employees</Typography>
               <Typography variant='h4' color='primary'>
-                {employees}
-              </Typography>
-              <Typography variant='body2' color='textSecondary'>
-                View detail &gt;
+                {employees ?? 0}
               </Typography>
             </CardContent>
           </Card>
@@ -30,10 +27,7 @@ const StatsPanel = ({ employees, managers, groups }) => {
             <CardContent>
               <Typography variant='subtitle1'>Managers</Typography>
               <Typography variant='h4' color='primary'>
-                {managers}
-              </Typography>
-              <Typography variant='body2' color='textSecondary'>
-                View detail &gt;
+                {managers ?? 0}
               </Typography>
             </CardContent>
           </Card>
@@ -43,10 +37,7 @@ const StatsPanel = ({ employees, managers, groups }) => {
             <CardContent>
               <Typography variant='subtitle1'>Groups</Typography>
               <Typography variant='h4' color='primary'>
-                {groups}
-              </Typography>
-              <Typography variant='body2' color='textSecondary'>
-                View detail &gt;
+                {groups ?? 0}
               </Typography>
             </CardContent>
           </Card>

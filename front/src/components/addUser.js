@@ -54,6 +54,7 @@ const AddUser = ({ onUserAdded }) => {
           value={role}
           onChange={(e) => setRole(e.target.value)}
           label='Role'
+          data-testid='role-select'
         >
           <MenuItem value='employee'>Employee</MenuItem>
           <MenuItem value='manager'>Manager</MenuItem>
