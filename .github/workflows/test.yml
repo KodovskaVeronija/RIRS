@@ -51,7 +51,7 @@ jobs:
       - name: Install Dependencies
         run: |
           rm -rf node_modules package-lock.json
-          npm ci
+          npm install
 
       - name: Run Tests
         working-directory: ./backend
