@@ -49,9 +49,7 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install
+        run: npm ci
 
       - name: Run Tests
         working-directory: ./backend
