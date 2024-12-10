@@ -1,6 +1,6 @@
 const Group = require('../schemas/group');
 
-class groupService {
+class GroupService {
   _id;
 
   constructor(id) {
@@ -30,4 +30,4 @@ class groupService {
   }
 }
 
-module.exports = groupService;
+module.exports = GroupService;

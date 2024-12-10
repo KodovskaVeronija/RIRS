@@ -2,7 +2,7 @@ const request = require('supertest');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const groupRouter = require('../routes/groupRouter'); // Adjust the path as needed
-const GroupService = require('../services/groupService');
+const GroupService = require('../services/GroupService');
 
 jest.mock('../services/groupService'); // Mock the service komentar
 
