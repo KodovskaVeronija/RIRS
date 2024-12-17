@@ -84,7 +84,6 @@ jobs:
         with:
           name: backend-coverage-report
           path: ./backend/coverage
-
   # Frontend Build
   frontend-build:
     name: Build Frontend
@@ -111,11 +110,11 @@ jobs:
         working-directory: ./front
         run: npm ci
 
-     - name: Build Frontend
-      working-directory: ./front
-      run: |
-        npm install
-        CI=false npm run build
+      - name: Build Frontend
+        working-directory: ./front
+        run: |
+          npm install
+          CI=false npm run build
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
