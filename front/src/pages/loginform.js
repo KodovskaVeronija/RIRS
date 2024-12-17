@@ -31,7 +31,7 @@ const LoginForm = ({ loginChange }) => {
         navigate('/');
       }
     }
-  }, []);
+  }, [navigate, user.role]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
