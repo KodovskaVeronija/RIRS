@@ -1,18 +1,18 @@
-import axios from "axios";
-const token = localStorage.getItem("token");
+import axios from 'axios';
+const token = localStorage.getItem('token');
 
 const api = axios.create({
-  baseURL: "/api",
+  baseURL: '/api',
   headers: {
-    "Content-Type": "application/json"
+    'Content-Type': 'application/json',
   },
 });
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (!token) {
-      console.warn("Token not found in localStorage.");
+      console.warn('Token not found in localStorage.');
     } else {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,7 +20,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error("Error in request interceptor:", error);
+    console.error('Error in request interceptor:', error);
     return Promise.reject(error);
   }
 );
@@ -28,42 +28,45 @@ api.interceptors.request.use(
 const apiCsv = axios.create({
   baseURL: '/api',
   headers: {
-    'Accept': 'text/octet-stream',
+    Accept: 'text/octet-stream',
     'Content-Type': 'text/octet-stream',
-    "Content-Disposition": "attachment;filename=expenses.csv",
+    'Content-Disposition': 'attachment;filename=expenses.csv',
   },
 });
 apiCsv.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.warn("Token not found in localStorage.");
-      } else {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-
-      return config;
-    },
-    (error) => {
-      console.error("Error in request interceptor:", error);
-      return Promise.reject(error);
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('Token not found in localStorage.');
+    } else {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+
+    return config;
+  },
+  (error) => {
+    console.error('Error in request interceptor:', error);
+    return Promise.reject(error);
+  }
 );
 
 export const getAllUsers = async () => {
   try {
-    const response = await api.get("/users");
+    const response = await api.get('/users');
     return response.data;
   } catch (error) {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -80,12 +83,15 @@ export const getUserById = async (userId) => {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -107,12 +113,15 @@ export const getGroups = async () => {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -124,14 +133,14 @@ export const getGroups = async () => {
 // Fetch all users and count employees and managers
 export const fetchUserCounts = async () => {
   try {
-    const response = await api.get("/users");
+    const response = await api.get('/users');
     const users = response.data;
 
     const employeesCount = users.filter(
-      (user) => user.role === "employee"
+      (user) => user.role === 'employee'
     ).length;
     const managersCount = users.filter(
-      (user) => user.role === "manager"
+      (user) => user.role === 'manager'
     ).length;
 
     return { employeesCount, managersCount };
@@ -139,10 +148,13 @@ export const fetchUserCounts = async () => {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
       window.location.href = '/login';
       return;
@@ -155,18 +167,21 @@ export const fetchUserCounts = async () => {
 
 export const addUser = async (userData) => {
   try {
-    const response = await api.post("/users", userData);
+    const response = await api.post('/users', userData);
     return response.data;
   } catch (error) {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -186,12 +201,15 @@ export const fetchGroupCount = async () => {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -201,18 +219,21 @@ export const fetchGroupCount = async () => {
 };
 export const addGroup = async (groupData) => {
   try {
-    const response = await api.post("/groups", groupData);
+    const response = await api.post('/groups', groupData);
     return response.data;
   } catch (error) {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -224,18 +245,21 @@ export const addGroup = async (groupData) => {
 // For submitting an expense request
 export const requestExpense = async (expenseData) => {
   try {
-    const response = await api.post("/expenses", expenseData);
+    const response = await api.post('/expenses', expenseData);
     return response.data;
   } catch (error) {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -252,12 +276,15 @@ export const fetchUsersRequests = async () => {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -274,12 +301,15 @@ export const fetchGroupsRequests = async () => {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -293,67 +323,79 @@ export const fetchRecentRequests = async () => {
     const response = await api.get('/manager/requests/recent');
     return response.data;
   } catch (error) {
-      console.error('Error fetching employees', error);
-  
-      // Check for 401 or 403 error and handle authorization failure
-      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        // Clear the token from local storage
-        localStorage.removeItem('token');
-        
-        // Redirect to the login page
-        window.location.href = '/login';
-        return;
-      }
-  
-      // Optionally, you can return a default response or null to handle this failure gracefully
-      return null; // Or any default value you want to return
+    console.error('Error fetching employees', error);
+
+    // Check for 401 or 403 error and handle authorization failure
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
+      // Clear the token from local storage
+      localStorage.removeItem('token');
+
+      // Redirect to the login page
+      window.location.href = '/login';
+      return;
     }
+
+    // Optionally, you can return a default response or null to handle this failure gracefully
+    return null; // Or any default value you want to return
+  }
 };
 
 export const handleDownloadCsv = async () => {
-  const tempLink = document.createElement('a')
-  tempLink.href = 'http://localhost:3000/api/manager/requests/recentCsv/' + token +'/'
-  tempLink.click()
-}
+  const tempLink = document.createElement('a');
+  tempLink.href =
+    'https://rirs1.onrender.com/api/manager/requests/recentCsv/' + token + '/';
+  tempLink.click();
+};
 
 export const approveRequest = async (id) => {
   try {
-    const response = await api.put('/expenses/' + id,
-        { status: 'approved', updatedAt: new Date()}
-    );
-    return response.data;
-  } catch (error) {
-      console.error('Error fetching employees', error);
-  
-      // Check for 401 or 403 error and handle authorization failure
-      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        // Clear the token from local storage
-        localStorage.removeItem('token');
-        
-        // Redirect to the login page
-        window.location.href = '/login';
-        return;
-      }
-  
-      // Optionally, you can return a default response or null to handle this failure gracefully
-      return null; // Or any default value you want to return
-    }
-};
-
-export const declineRequest = async (id) => {
-  try {
-    const response = await api.put('/expenses/' + id,
-        { status: 'declined', updatedAt: new Date()}
-    );
+    const response = await api.put('/expenses/' + id, {
+      status: 'approved',
+      updatedAt: new Date(),
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
+      // Redirect to the login page
+      window.location.href = '/login';
+      return;
+    }
+
+    // Optionally, you can return a default response or null to handle this failure gracefully
+    return null; // Or any default value you want to return
+  }
+};
+
+export const declineRequest = async (id) => {
+  try {
+    const response = await api.put('/expenses/' + id, {
+      status: 'declined',
+      updatedAt: new Date(),
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching employees', error);
+
+    // Check for 401 or 403 error and handle authorization failure
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
+      // Clear the token from local storage
+      localStorage.removeItem('token');
+
       // Redirect to the login page
       window.location.href = '/login';
       return;
@@ -372,12 +414,15 @@ export const fetchEmployees = async () => {
     console.error('Error fetching employees', error);
 
     // Check for 401 or 403 error and handle authorization failure
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
       // Clear the token from local storage
       localStorage.removeItem('token');
-      
+
       // Redirect to the login page
-      window.location.href = '/login'
+      window.location.href = '/login';
       return;
     }
 
@@ -387,23 +432,26 @@ export const fetchEmployees = async () => {
 };
 
 export const updateEmployeeBudget = async (id, budget) => {
-    try {
-        const response = await api.put(`/users/${id}`, { budget: budget });
-        return response.data;
-    } catch (error) {
-        console.error('Error updating employee budget', error);
+  try {
+    const response = await api.put(`/users/${id}`, { budget: budget });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating employee budget', error);
 
-        // Check for 401 or 403 error and handle authorization failure
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        // Clear the token from local storage
-        localStorage.removeItem('token');
+    // Check for 401 or 403 error and handle authorization failure
+    if (
+      error.response &&
+      (error.response.status === 401 || error.response.status === 403)
+    ) {
+      // Clear the token from local storage
+      localStorage.removeItem('token');
 
-        // Redirect to the login page
-        window.location.href = '/login';
-        return;
-        }
-
-        // Optionally, you can return a default response or null to handle this failure gracefully
-        return null; // Or any default value you want to return
+      // Redirect to the login page
+      window.location.href = '/login';
+      return;
     }
-}
+
+    // Optionally, you can return a default response or null to handle this failure gracefully
+    return null; // Or any default value you want to return
+  }
+};
