@@ -16,12 +16,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
       - name: Cache Node Modules
         uses: actions/cache@v3
         with:
@@ -29,15 +27,12 @@ jobs:
           key: ${{ runner.os }}-frontend-${{ hashFiles('./front/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-frontend-
-
       - name: Install Dependencies
         working-directory: ./front
         run: npm ci
-
       - name: Run Tests
         working-directory: ./front
         run: npm test -- --coverage
-
       - name: Upload Coverage Report
         if: success()
         uses: actions/upload-artifact@v3
@@ -52,12 +47,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
       - name: Cache Node Modules
         uses: actions/cache@v3
         with:
@@ -65,25 +58,22 @@ jobs:
           key: ${{ runner.os }}-backend-${{ hashFiles('./backend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-backend-
-
       - name: Install Dependencies
         working-directory: ./backend
         run: npm ci
-
       - name: Debug Installed Dependencies
         working-directory: ./backend
         run: npm ls
-
       - name: Run Tests
         working-directory: ./backend
         run: npm test -- --coverage
-
       - name: Upload Coverage Report
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: backend-coverage-report
           path: ./backend/coverage
+
   # Frontend Build
   frontend-build:
     name: Build Frontend
@@ -92,12 +82,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
       - name: Cache Node Modules
         uses: actions/cache@v3
         with:
@@ -105,17 +93,14 @@ jobs:
           key: ${{ runner.os }}-frontend-${{ hashFiles('./front/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-frontend-
-
       - name: Install Dependencies
         working-directory: ./front
         run: npm ci
-
       - name: Build Frontend
         working-directory: ./front
         run: |
           npm install
           CI=false npm run build
-
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -130,12 +115,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
       - name: Cache Node Modules
         uses: actions/cache@v3
         with:
@@ -143,52 +126,47 @@ jobs:
           key: ${{ runner.os }}-backend-${{ hashFiles('./backend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-backend-
-
       - name: Install Dependencies
         working-directory: ./backend
         run: npm ci
-
       - name: Build Backend
         working-directory: ./backend
         run: npm run build
-
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: backend-build
           path: ./backend/build
-  # Gradnja Docker slike in nalaganje na Docker Hub
-  docker-build-and-push:
+
+  # Docker Build and Push for Backend
+  docker-build-and-push-backend:
     needs: backend-build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
       - name: Build and push Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }} ./backend
           docker push ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}
-  # Gradnja Docker slike in nalaganje na Docker Hub
-  docker-build-and-push:
+
+  # Docker Build and Push for Frontend
+  docker-build-and-push-frontend:
     needs: frontend-build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
       - name: Build and push Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/front:${{ github.sha }} ./front
